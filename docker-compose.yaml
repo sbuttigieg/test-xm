@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  inmem:
+    image: redis
+    networks:
+      - test-xm
+
+  app-test-xm:
+    container_name: app-test-xm
+    image: app-test-xm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    restart: on-failure
+    tty: true
+    ports:
+      - "7711:${PORT}"
+    environment:
+      ENDPOINT_URL: ${ENDPOINT_URL}
+      ENV: ${ENV}
+      PORT: ${PORT}
+      SERVICE_NAME: ${SERVICE_NAME}
+      VERSION: ${VER}
+
+      REDIS_HOST: inmem
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_EXPIRY_SEC: ${REDIS_EXPIRY_SEC}
+    networks:
+      - test-xm
+      
+networks: 
+  test-xm:
+    driver: bridge
