@@ -76,10 +76,10 @@ func main() {
 	}
 
 	// Endpoints
-	// apiRouter.POST(fmt.Sprintf("%s/:wallet_id/auth", endpointURL), apiHandlers.Auth)
+	appRouter.POST(endpointURL, appHandlers.Create)
 	appRouter.GET(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Get)
-	// apiRouter.POST(fmt.Sprintf("%s/:wallet_id/credit", endpointURL), middleware.BasicAuth(apiService), apiHandlers.Credit)
-	// apiRouter.POST(fmt.Sprintf("%s/:wallet_id/debit", endpointURL), middleware.BasicAuth(apiService), apiHandlers.Debit)
+	// appRouter.POST(fmt.Sprintf("%s/:wallet_id/credit", endpointURL), middleware.BasicAuth(apiService), apiHandlers.Credit)
+	// appRouter.POST(fmt.Sprintf("%s/:wallet_id/debit", endpointURL), middleware.BasicAuth(apiService), apiHandlers.Debit)
 
 	// Start the server
 	err = appRouter.Run(fmt.Sprintf(":%s", apiAddr))

@@ -31,6 +31,15 @@ func NewCacheMiddleware(cfg *app.Config, next services.Store, cache store.Cache)
 	return &m
 }
 
+func (m *cacheMiddleware) Create(ctx context.Context, req *models.Company) (string, error) {
+	resp, err := m.next.Create(ctx, req)
+	if err != nil {
+		return "", errors.Wrapf(err, "")
+	}
+
+	return resp, nil
+}
+
 func (m *cacheMiddleware) Get(ctx context.Context, id string) (*models.Company, error) {
 	key := fmt.Sprintf("%s_%s", id, companies)
 

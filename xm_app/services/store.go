@@ -8,5 +8,6 @@ import (
 
 //go:generate moq -out ./mocks/store.go -pkg mocks  . Store
 type Store interface {
+	Create(context.Context, *models.Company) (string, error)
 	Get(context.Context, string) (*models.Company, error)
 }

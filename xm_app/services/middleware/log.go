@@ -24,13 +24,25 @@ func NewLoggingMiddleware(cfg *app.Config, next services.Service) services.Servi
 	return &m
 }
 
-func (m *loggingMiddleware) Get(ctx context.Context, id string) (*models.Company, error) {
+func (m *loggingMiddleware) Create(ctx context.Context, req *models.Company) (string, error) {
 	start := time.Now()
-	resp, err := m.next.Get(ctx, id)
+	resp, err := m.next.Create(ctx, req)
+	end := time.Now()
+	m.config.Log.Infof(
+		"service call, duration: %v, service-name: company, method: Create, layer: service, req: %+v, resp: %s, error: %v",
+		end.Sub(start).String(), req, resp, err,
+	)
+
+	return resp, err
+}
+
+func (m *loggingMiddleware) Get(ctx context.Context, req string) (*models.Company, error) {
+	start := time.Now()
+	resp, err := m.next.Get(ctx, req)
 	end := time.Now()
 	m.config.Log.Infof(
 		"service call, duration: %v, service-name: company, method: Get, layer: service, req: %s, resp: %+v, error: %v",
-		end.Sub(start).String(), id, resp, err,
+		end.Sub(start).String(), req, resp, err,
 	)
 
 	return resp, err

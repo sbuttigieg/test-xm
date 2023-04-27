@@ -35,5 +35,8 @@ func (h *Handler) Get(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, company)
+	c.JSON(http.StatusOK, OKMsg{
+		Code: http.StatusOK,
+		Data: company,
+	})
 }
