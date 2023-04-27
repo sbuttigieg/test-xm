@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/sbuttigieg/test-xm/xm_app/errors"
 )
@@ -13,6 +14,8 @@ type Company struct {
 	Employees   int         `json:"employees"`
 	Registered  bool        `json:"registered"`
 	Type        CompanyType `json:"type"`
+	CreatedAt   time.Time   `json:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at"`
 }
 
 type CompanyType string

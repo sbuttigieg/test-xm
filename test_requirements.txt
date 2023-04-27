@@ -4,7 +4,7 @@ Build a microservice to handle companies. It should provide the following operat
 • Create
 • Patch
 • Delete
-• Get (one)
+§ Get (one)
 
 § Each company is defined by the following attributes:
 § ID (uuid) required
