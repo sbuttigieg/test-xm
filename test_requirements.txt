@@ -1,10 +1,10 @@
 Technical requirements
 
-Build a microservice to handle companies. It should provide the following operations:
-• Create
-• Patch
-• Delete
-• Get (one)
+§ Build a microservice to handle companies. It should provide the following operations:
+§ Create
+§ Patch
+§ Delete
+§ Get (one)
 
 § Each company is defined by the following attributes:
 § ID (uuid) required
