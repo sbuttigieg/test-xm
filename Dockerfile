@@ -7,12 +7,10 @@ RUN apk update && \
 
 # Copy the compiled go executable
 COPY ./bin/test-xm /
+COPY ./xm_app/store/sql/migrations /migrations
 
 # Set working directory
 WORKDIR /
-
-# Copy the source code
-COPY . /
 
 ENTRYPOINT ["/test-xm"]
 
