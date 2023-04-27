@@ -26,3 +26,24 @@ func DBInit(db *gorm.DB) error {
 
 	return nil
 }
+
+func DBInit2(db *gorm.DB) error {
+	err := db.AutoMigrate(&models.Company2{})
+	if err != nil {
+		return err
+	}
+
+	var count int64
+
+	db.Table("company2").Count(&count)
+
+	if count == 0 {
+		var company2 = []models.Company2{
+			{ID: "6cc4ee0d-9919-4857-a70d-9b7283957e16", Name: "Google", Description: "house of Golang", Employees: 50000, Registered: true, Type: "Corporations"},
+		}
+
+		db.Create(&company2)
+	}
+
+	return nil
+}
