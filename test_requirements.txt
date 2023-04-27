@@ -2,7 +2,7 @@ Technical requirements
 
 Build a microservice to handle companies. It should provide the following operations:
 § Create
-• Patch
+§ Patch
 • Delete
 § Get (one)
 

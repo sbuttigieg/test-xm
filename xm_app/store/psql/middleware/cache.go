@@ -67,3 +67,12 @@ func (m *cacheMiddleware) Get(ctx context.Context, id string) (*models.Company, 
 
 	return company, nil
 }
+
+func (m *cacheMiddleware) Update(ctx context.Context, id string, data *models.Company, fields []string) (*models.Company, error) {
+	resp, err := m.next.Update(ctx, id, data, fields)
+	if err != nil {
+		return nil, errors.Wrapf(err, "")
+	}
+
+	return resp, nil
+}

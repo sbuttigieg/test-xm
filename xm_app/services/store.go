@@ -10,4 +10,5 @@ import (
 type Store interface {
 	Create(context.Context, *models.Company) (string, error)
 	Get(context.Context, string) (*models.Company, error)
+	Update(context.Context, string, *models.Company, []string) (*models.Company, error)
 }

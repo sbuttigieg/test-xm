@@ -47,3 +47,15 @@ func (m *loggingMiddleware) Get(ctx context.Context, req string) (*models.Compan
 
 	return resp, err
 }
+
+func (m *loggingMiddleware) Update(ctx context.Context, id string, data *models.Company, fields []string) (*models.Company, error) {
+	start := time.Now()
+	resp, err := m.next.Update(ctx, id, data, fields)
+	end := time.Now()
+	m.config.Log.Infof(
+		"service call, duration: %v, service-name: company, method: Update, layer: service, req: %+v, fields: %+v, resp: %+v, error: %v",
+		end.Sub(start).String(), data, fields, resp, err,
+	)
+
+	return resp, err
+}
