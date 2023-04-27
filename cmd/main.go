@@ -7,6 +7,7 @@ import (
 
 	"github.com/sbuttigieg/test-xm/cmd/config"
 	"github.com/sbuttigieg/test-xm/cmd/config/connections"
+	"github.com/sbuttigieg/test-xm/cmd/config/store"
 )
 
 func main() {
@@ -35,10 +36,18 @@ func main() {
 	}
 
 	// connections
+	redisConnection, err := connections.NewRedis()
+	if err != nil {
+		log.WithContext(ctx).Panic(err.Error())
+	}
+
 	dbConnection, err := connections.NewPostgres(c)
 	if err != nil {
 		log.WithContext(ctx).Panic(err.Error())
 	}
 
-	log.WithContext(ctx).Info(dbConnection, "test-xm")
+	// redis setup
+	cache := store.NewCache(c, redisConnection)
+
+	log.WithContext(ctx).Info(dbConnection, cache)
 }

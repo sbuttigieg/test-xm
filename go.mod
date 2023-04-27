@@ -3,6 +3,8 @@ module github.com/sbuttigieg/test-xm
 go 1.19
 
 require (
+	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/google/uuid v1.3.0
 	github.com/lib/pq v1.10.9
 	github.com/matryer/is v1.4.1
 	github.com/pkg/errors v0.9.1
@@ -24,7 +26,6 @@ require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/outcaste-io/ristretto v0.2.1 // indirect
 	github.com/philhofer/fwd v1.1.1 // indirect
 	github.com/secure-systems-lab/go-securesystemslib v0.5.0 // indirect
