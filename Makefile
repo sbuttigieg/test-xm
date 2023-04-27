@@ -4,7 +4,7 @@ lint:
 
 .PHONY: test
 test:
-	@go test -race -cover ./internal/test-xm/...
+	@go test -race -cover ./xm_app/...
 
 .PHONY: compile
 compile:

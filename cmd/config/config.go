@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -9,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	app "github.com/sbuttigieg/test-xm/xm_app"
+	"github.com/sbuttigieg/test-xm/xm_app/errors"
 )
 
 // NewConfig create new config
@@ -20,12 +20,12 @@ func NewConfig(log *logrus.Logger) (*app.Config, error) {
 
 	env := os.Getenv("ENV")
 	if env == "" {
-		return nil, fmt.Errorf("env is empty")
+		return nil, errors.Wrap("env is empty")
 	}
 
 	serviceName := os.Getenv("SERVICE_NAME")
 	if serviceName == "" {
-		return nil, fmt.Errorf("service name is empty")
+		return nil, errors.Wrap("service name is empty")
 	}
 
 	storeTimeout, err := strconv.Atoi(os.Getenv("POSTGRES_TIMEOUT_SEC"))
@@ -35,7 +35,7 @@ func NewConfig(log *logrus.Logger) (*app.Config, error) {
 
 	version := os.Getenv("VERSION")
 	if version == "" {
-		return nil, fmt.Errorf("version is empty")
+		return nil, errors.Wrap("version is empty")
 	}
 
 	c := &app.Config{
