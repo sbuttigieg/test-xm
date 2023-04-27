@@ -38,6 +38,7 @@ services:
     environment:
       ENDPOINT_URL: ${ENDPOINT_URL}
       ENV: ${ENV}
+      LOG_LEVEL: ${LOG_LEVEL}
       PORT: ${PORT}
       SERVICE_NAME: ${SERVICE_NAME}
       VERSION: ${VER}

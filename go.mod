@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/lib/pq v1.10.9
 	github.com/rubenv/sql-migrate v1.4.0
+	github.com/sirupsen/logrus v1.8.1
 	gopkg.in/DataDog/dd-trace-go.v1 v1.50.0
 )
 
