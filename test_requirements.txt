@@ -6,7 +6,7 @@ Build a microservice to handle companies. It should provide the following operat
 • Delete
 • Get (one)
 
-Each company is defined by the following attributes:
+§ Each company is defined by the following attributes:
 § ID (uuid) required
 § Name (15 characters) required - unique
 § Description (3000 characters) optional
@@ -22,13 +22,13 @@ Expectations:
 • We expect the solution to be production ready.
 
 Will be considered a plus:
-• On each mutating operation, an event should be produced.
+==> On each mutating operation, an event should be produced.
 § Dockerize the application to be ready for building the production docker image
 § Use docker for setting up the external services such as the database
 § REST is suggested, but GRPC is also an option
 • JWT for authentication
-• Kafka for events
+==> Kafka for events
 § DB is up to you
-• Integration tests are highly appreciated
+==> Integration tests are highly appreciated
 § Linter
 § Configuration file

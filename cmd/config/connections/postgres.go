@@ -16,27 +16,26 @@ import (
 
 func NewPostgres(c *app.Config) (*sql.DB, error) {
 	dbHost := os.Getenv("POSTGRES_HOST")
-	dbName := os.Getenv("POSTGRES_NAME")
-	dbPort := os.Getenv("POSTGRES_PORT")
-	dbPwd := os.Getenv("POSTGRES_PASSWORD")
-	dbUser := os.Getenv("POSTGRES_USER")
-
 	if dbHost == "" {
 		return nil, fmt.Errorf("database host is empty")
 	}
 
+	dbName := os.Getenv("POSTGRES_NAME")
 	if dbName == "" {
 		return nil, fmt.Errorf("database name is empty")
 	}
 
+	dbPort := os.Getenv("POSTGRES_PORT")
 	if dbPort == "" {
 		return nil, fmt.Errorf("database port is empty")
 	}
 
+	dbPwd := os.Getenv("POSTGRES_PASSWORD")
 	if dbPwd == "" {
 		return nil, fmt.Errorf("database password is empty")
 	}
 
+	dbUser := os.Getenv("POSTGRES_USER")
 	if dbUser == "" {
 		return nil, fmt.Errorf("database user is empty")
 	}
@@ -50,7 +49,7 @@ func NewPostgres(c *app.Config) (*sql.DB, error) {
 		return nil, fmt.Errorf("store connection error: %w", err)
 	}
 
-	err = runMigrations(db)
+	err = runMigrations(c, db)
 	if err != nil {
 		return nil, fmt.Errorf("migrate error: %w", err)
 	}
@@ -62,7 +61,7 @@ func retryConn(c *app.Config, dsn string) (*sql.DB, error) {
 	for i := 0; i <= 3; i++ {
 		db, err := sqltrace.Open("postgres", dsn, sqltrace.WithServiceName(c.ServiceName))
 		if err != nil {
-			// *** ADD LOG
+			c.Log.Info(fmt.Sprintf("DB load try no. %v: ", i+1), err)
 			time.Sleep(c.StoreTimeout)
 
 			continue
@@ -79,19 +78,19 @@ func retryConn(c *app.Config, dsn string) (*sql.DB, error) {
 	return nil, fmt.Errorf("database connection retry exceded")
 }
 
-func runMigrations(db *sql.DB) error {
+func runMigrations(c *app.Config, db *sql.DB) error {
 	migrations := &migrate.FileMigrationSource{
 		Dir: "migrations",
 	}
 
 	migrate.SetTable("migrations")
 
-	_, err := migrate.Exec(db, "postgres", migrations, migrate.Up)
+	n, err := migrate.Exec(db, "postgres", migrations, migrate.Up)
 	if err != nil {
 		return fmt.Errorf("base migrations: %w", err)
 	}
 
-	// *** ADD LOG
+	c.Log.Info(fmt.Sprintf("Applied base %d migrations!", n))
 
 	return nil
 }
