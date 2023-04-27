@@ -1,16 +1,17 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) Get(c *gin.Context) {
+func (h *Handler) Delete(c *gin.Context) {
 	id := c.Param("id")
 
-	company, err := h.service.Get(c.Request.Context(), id)
+	err := h.service.Delete(c.Request.Context(), id)
 	if err != nil {
 		c.Abort()
 
@@ -28,7 +29,7 @@ func (h *Handler) Get(c *gin.Context) {
 		default:
 			c.JSON(http.StatusInternalServerError, ErrMsg{
 				Code:  http.StatusInternalServerError,
-				Error: GetError,
+				Error: DeleteError,
 			})
 		}
 
@@ -37,6 +38,6 @@ func (h *Handler) Get(c *gin.Context) {
 
 	c.JSON(http.StatusOK, OKMsg{
 		Code: http.StatusOK,
-		Data: company,
+		Data: fmt.Sprintf("%s: %s", Successful, id),
 	})
 }

@@ -14,6 +14,7 @@ import (
 //go:generate moq -out ./mocks/service.go -pkg mocks  . Service
 type Service interface {
 	Create(context.Context, *models.Company) (string, error)
+	Delete(context.Context, string) error
 	Get(context.Context, string) (*models.Company, error)
 	Update(context.Context, string, *models.Company, []string) (*models.Company, error)
 }

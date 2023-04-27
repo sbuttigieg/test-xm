@@ -32,8 +32,8 @@ func (h *Handler) Update(c *gin.Context) {
 	if err != nil {
 		c.Abort()
 
-		switch strings.Contains(err.Error(), "field") {
-		case true:
+		switch {
+		case strings.Contains(err.Error(), FieldError):
 			c.JSON(http.StatusBadRequest, ErrMsg{
 				Code:  http.StatusBadRequest,
 				Error: InvalidRequest,

@@ -48,6 +48,18 @@ func (m *loggingMiddleware) Get(ctx context.Context, req string) (*models.Compan
 	return resp, err
 }
 
+func (m *loggingMiddleware) Delete(ctx context.Context, req string) error {
+	start := time.Now()
+	err := m.next.Delete(ctx, req)
+	end := time.Now()
+	m.config.Log.Infof(
+		"service call, duration: %v, service-name: company, method: Get, layer: service, req: %s, resp: n/a, error: %v",
+		end.Sub(start).String(), req, err,
+	)
+
+	return err
+}
+
 func (m *loggingMiddleware) Update(ctx context.Context, id string, data *models.Company, fields []string) (*models.Company, error) {
 	start := time.Now()
 	resp, err := m.next.Update(ctx, id, data, fields)

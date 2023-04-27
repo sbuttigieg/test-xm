@@ -77,7 +77,7 @@ func main() {
 
 	// Endpoints
 	appRouter.POST(endpointURL, appHandlers.Create)
-	// appRouter.DELETE(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Delete)
+	appRouter.DELETE(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Delete)
 	appRouter.GET(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Get)
 	appRouter.PATCH(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Update)
 	// middleware.BasicAuth(appService)

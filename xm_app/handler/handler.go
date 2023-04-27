@@ -8,10 +8,12 @@ const (
 
 	CreateError       = "error creating company"
 	GetError          = "error getting company by id"
+	DeleteError       = "error deleting company by id"
+	FieldError        = "field"
 	InvalidRequest    = "invalid request"
 	InvalidUUID       = "id is not a valid uuid"
 	InexistentCompany = "company does not exist"
-	NotFound          = "get company: : not found company by"
+	NotFound          = "not found"
 	Successful        = "successful"
 	UpdateError       = "error updating company"
 )

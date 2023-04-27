@@ -40,6 +40,15 @@ func (m *cacheMiddleware) Create(ctx context.Context, req *models.Company) (stri
 	return resp, nil
 }
 
+func (m *cacheMiddleware) Delete(ctx context.Context, id string) error {
+	err := m.next.Delete(ctx, id)
+	if err != nil {
+		return errors.Wrapf(err, "")
+	}
+
+	return nil
+}
+
 func (m *cacheMiddleware) Get(ctx context.Context, id string) (*models.Company, error) {
 	key := fmt.Sprintf("%s_%s", id, companies)
 
