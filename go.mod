@@ -4,6 +4,8 @@ go 1.19
 
 require (
 	github.com/lib/pq v1.10.9
+	github.com/matryer/is v1.4.1
+	github.com/pkg/errors v0.9.1
 	github.com/rubenv/sql-migrate v1.4.0
 	github.com/sirupsen/logrus v1.8.1
 	gopkg.in/DataDog/dd-trace-go.v1 v1.50.0
@@ -25,7 +27,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/outcaste-io/ristretto v0.2.1 // indirect
 	github.com/philhofer/fwd v1.1.1 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/secure-systems-lab/go-securesystemslib v0.5.0 // indirect
 	github.com/tinylib/msgp v1.1.6 // indirect
 	go.uber.org/atomic v1.10.0 // indirect

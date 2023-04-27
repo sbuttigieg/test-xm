@@ -12,32 +12,33 @@ import (
 	sqltrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/database/sql"
 
 	app "github.com/sbuttigieg/test-xm/xm_app"
+	"github.com/sbuttigieg/test-xm/xm_app/errors"
 )
 
 func NewPostgres(c *app.Config) (*sql.DB, error) {
 	dbHost := os.Getenv("POSTGRES_HOST")
 	if dbHost == "" {
-		return nil, fmt.Errorf("database host is empty")
+		return nil, errors.Wrap("database host is empty")
 	}
 
 	dbName := os.Getenv("POSTGRES_NAME")
 	if dbName == "" {
-		return nil, fmt.Errorf("database name is empty")
+		return nil, errors.Wrap("database name is empty")
 	}
 
 	dbPort := os.Getenv("POSTGRES_PORT")
 	if dbPort == "" {
-		return nil, fmt.Errorf("database port is empty")
+		return nil, errors.Wrap("database port is empty")
 	}
 
 	dbPwd := os.Getenv("POSTGRES_PASSWORD")
 	if dbPwd == "" {
-		return nil, fmt.Errorf("database password is empty")
+		return nil, errors.Wrap("database password is empty")
 	}
 
 	dbUser := os.Getenv("POSTGRES_USER")
 	if dbUser == "" {
-		return nil, fmt.Errorf("database user is empty")
+		return nil, errors.Wrap("database user is empty")
 	}
 
 	sqltrace.Register("postgres", pq.Driver{})
@@ -46,12 +47,12 @@ func NewPostgres(c *app.Config) (*sql.DB, error) {
 
 	db, err := retryConn(c, dsn)
 	if err != nil {
-		return nil, fmt.Errorf("store connection error: %w", err)
+		return nil, errors.Wrapf(err, "store connection error")
 	}
 
 	err = runMigrations(c, db)
 	if err != nil {
-		return nil, fmt.Errorf("migrate error: %w", err)
+		return nil, errors.Wrapf(err, "migrate error")
 	}
 
 	return db, nil
@@ -75,7 +76,7 @@ func retryConn(c *app.Config, dsn string) (*sql.DB, error) {
 		time.Sleep(c.StoreTimeout)
 	}
 
-	return nil, fmt.Errorf("database connection retry exceded")
+	return nil, errors.Wrap("database connection retry exceded")
 }
 
 func runMigrations(c *app.Config, db *sql.DB) error {
@@ -87,7 +88,7 @@ func runMigrations(c *app.Config, db *sql.DB) error {
 
 	n, err := migrate.Exec(db, "postgres", migrations, migrate.Up)
 	if err != nil {
-		return fmt.Errorf("base migrations: %w", err)
+		return errors.Wrapf(err, "base migrations")
 	}
 
 	c.Log.Info(fmt.Sprintf("Applied base %d migrations!", n))

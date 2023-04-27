@@ -2,7 +2,8 @@ package models
 
 import (
 	"encoding/json"
-	"fmt"
+
+	"github.com/sbuttigieg/test-xm/xm_app/errors"
 )
 
 type Company struct {
@@ -34,7 +35,7 @@ func (t *CompanyType) Parse(s string) error {
 	case "Sole Proprietorship":
 		*t = CompanyTypeSoleProprietorship
 	default:
-		return fmt.Errorf("invalid Company type '%s'", s)
+		return errors.BadRequest("invalid Company type '%s'", s)
 	}
 
 	return nil
@@ -49,7 +50,7 @@ func (t *CompanyType) UnmarshalJSON(b []byte) error {
 
 	err := json.Unmarshal(b, &compType)
 	if err != nil {
-		return fmt.Errorf("JSON marshaling of company type failed '%w'", err)
+		return errors.Internal("JSON marshaling of company type failed '%s'", err)
 	}
 
 	return t.Parse(compType)
