@@ -37,6 +37,10 @@ linters:
     - structcheck
     - varcheck
     - deadcode
+    # generics
+    - rowserrcheck
+    - sqlclosecheck
+    - wastedassign
 linters-settings:
   maligned:
     suggest-new: true
