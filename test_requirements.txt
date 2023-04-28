@@ -14,7 +14,7 @@ Technical requirements
 § Registered (boolean) required
 § Type (Corporations | NonProfit | Cooperative | Sole Proprietorship) required
 
-Only authenticated users should have access to create, update and delete companies.
+§ Only authenticated users should have access to create, update and delete companies.
 
 Expectations:
 § As a deliverable, we expect a GitHub repository with the source code. 
@@ -26,7 +26,7 @@ Will be considered a plus:
 § Dockerize the application to be ready for building the production docker image
 § Use docker for setting up the external services such as the database
 § REST is suggested, but GRPC is also an option
-• JWT for authentication
+§ JWT for authentication
 ==> Kafka for events
 § DB is up to you
 ==> Integration tests are highly appreciated

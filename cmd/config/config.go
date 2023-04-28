@@ -23,6 +23,11 @@ func NewConfig(log *logrus.Logger) (*app.Config, error) {
 		return nil, errors.Wrap("env is empty")
 	}
 
+	jwtExpiry, err := strconv.Atoi(os.Getenv("JWT_EXPIRY_SEC"))
+	if err != nil {
+		return nil, err
+	}
+
 	serviceName := os.Getenv("SERVICE_NAME")
 	if serviceName == "" {
 		return nil, errors.Wrap("service name is empty")
@@ -41,6 +46,7 @@ func NewConfig(log *logrus.Logger) (*app.Config, error) {
 	c := &app.Config{
 		CacheExpiry:  time.Duration(cacheExpiry) * time.Second,
 		Env:          env,
+		JWTExpiry:    time.Duration(jwtExpiry) * time.Second,
 		Log:          log,
 		ServiceName:  serviceName,
 		StoreTimeout: time.Duration(storeTimeout) * time.Second,

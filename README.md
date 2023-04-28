@@ -21,4 +21,13 @@
     - `docker image rm app-test-xm`
 
 ## Notes:
-- An `.env` file and a `env.yml` are included in the repo for this test. However in a working environment these files would not be included. The `.env` file is here beinh used to populate the variables in the local docker-compose file. The `env.yml` is an example of what would be in another repository from where Kubernetes would take the env variables to build the containers.
+- An `.env` file and a `env.yml` are included in the repo for this test. However in a working environment these files would not be included. The `.env` file is here beinh used to populate the variables in the local docker-compose file. The `env.yml` is an example of what would be in another repository from where Kubernetes would take the env variables to build the containers. In this file the sensitive variable values are not shown and are marked secrets.
+- For the secure endpoints a jwt token must be passed as a bearer token in the request header.
+- A token can be retrieved by sending a `/companies/token` request with correct email and password in the body.
+- New users can be added by sending a `/companies/token` request. However a user has been added to migrations to ease testing. The user credentials are: 
+```
+{
+    "email": "thedoe@gmail.com",
+    "password": "ilovegolang"
+}
+```

@@ -10,9 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/sbuttigieg/test-xm/cmd/config"
-	"github.com/sbuttigieg/test-xm/cmd/config/app"
+	"github.com/sbuttigieg/test-xm/cmd/config/companies"
 	"github.com/sbuttigieg/test-xm/cmd/config/connections"
 	"github.com/sbuttigieg/test-xm/cmd/config/store"
+	"github.com/sbuttigieg/test-xm/cmd/config/users"
 	"github.com/sbuttigieg/test-xm/xm_app/handler/middleware"
 )
 
@@ -58,9 +59,12 @@ func main() {
 	// api setup
 	endpointURL := os.Getenv("ENDPOINT_URL")
 	apiAddr := os.Getenv("PORT")
-	appStore := app.NewStore(c, dbConnection, cache)
-	appService := app.NewService(c, cache, appStore, uuid.New, time.Now)
-	appHandlers := app.NewHandlers(appService)
+	appStore := companies.NewStore(c, dbConnection, cache)
+	appService := companies.NewService(c, cache, appStore, uuid.New, time.Now)
+	appHandlers := companies.NewHandlers(appService)
+	usersStore := users.NewStore(c, dbConnection, cache)
+	usersService := users.NewService(c, cache, usersStore, uuid.New, time.Now)
+	usersHandlers := users.NewHandlers(c, usersService)
 
 	// Comment for debug mode. Uncomment for production
 	// gin.SetMode(gin.ReleaseMode)
@@ -75,12 +79,24 @@ func main() {
 		log.WithContext(ctx).Panic(err.Error())
 	}
 
-	// Endpoints
-	appRouter.POST(endpointURL, appHandlers.Create)
-	appRouter.DELETE(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Delete)
-	appRouter.GET(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Get)
-	appRouter.PATCH(fmt.Sprintf("%s/:id", endpointURL), appHandlers.Update)
-	// middleware.BasicAuth(appService)
+	// Company endpoints
+	company := appRouter.Group(endpointURL)
+	{
+		company.GET("/:id", appHandlers.Get)
+		secured := appRouter.Group(endpointURL).Use(middleware.Auth(c))
+		{
+			secured.POST("", appHandlers.Create)
+			secured.DELETE("/:id", appHandlers.Delete)
+			secured.PATCH("/:id", appHandlers.Update)
+		}
+	}
+
+	// User endpoints
+	user := appRouter.Group(endpointURL)
+	{
+		user.POST("/users", usersHandlers.Create)
+		user.POST("/token", usersHandlers.GetToken)
+	}
 
 	// Start the server
 	err = appRouter.Run(fmt.Sprintf(":%s", apiAddr))
