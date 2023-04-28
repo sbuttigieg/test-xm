@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "34f71da0-7a3a-44cc-bf3b-1d4ea324444b",
+		"name": "xm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16045056"
+	},
+	"item": [
+		{
+			"name": "companies/:id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7711/api/v1/companies/18d09c66-d5a5-42ce-b70b-110a73a0c38f",
+					"host": [
+						"localhost"
+					],
+					"port": "7711",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"18d09c66-d5a5-42ce-b70b-110a73a0c38f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpdmluaXR5IiwiZW1haWwiOiJ0aGVkb2VAZ21haWwuY29tIiwiZXhwIjoxNjgyNjc3NjcwfQ.FpuciMoNb_b5sBDsSoNU64ogUjeYZUULHC2-ZiwKv2Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Microsoft232\",\n    \"description\": \"Home of .NET\",\n    \"employees\": 40000,\n    \"registered\": true,\n    \"type\": \"Corporations\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7711/api/v1/companies",
+					"host": [
+						"localhost"
+					],
+					"port": "7711",
+					"path": [
+						"api",
+						"v1",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies/:id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpdmluaXR5IiwiZW1haWwiOiJ0aGVkb2VAZ21haWwuY29tIiwiZXhwIjoxNjgyNjc3NjcwfQ.FpuciMoNb_b5sBDsSoNU64ogUjeYZUULHC2-ZiwKv2Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"company\": {\n        \"name\": \"Microsoft22\",\n        \"description\": \"Home of pussycat\",\n        \"employees\": 20000,\n        \"registered\": false,\n        \"type\": \"Sole Proprietorship\"\n    },\n    \"fields\": [\n        \"employees\",\n        \"description\",\n        \"registered\",\n        \"type\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7711/api/v1/companies/18d09c66-d5a5-42ce-b70b-110a73a0c38f",
+					"host": [
+						"localhost"
+					],
+					"port": "7711",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"18d09c66-d5a5-42ce-b70b-110a73a0c38f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvbmQyIiwiZW1haWwiOiJoYXJyeTJAZ21haWwuY29tIiwiZXhwIjoxNjgyNjc2OTg0fQ.u94Xri21xpTb2QIpeTpeR0wG8EUTsNoyD1FNIHBDV2c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:7711/api/v1/companies/bccfa1c0-e566-41ce-a73b-bd33f8bc7d5a",
+					"host": [
+						"localhost"
+					],
+					"port": "7711",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"bccfa1c0-e566-41ce-a73b-bd33f8bc7d5a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies/users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Harry3\",\n    \"username\": \"Bond3\",\n    \"email\": \"harry3@gmail.com\",\n    \"password\": \"ilovegolang\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7711/api/v1/companies/users",
+					"host": [
+						"localhost"
+					],
+					"port": "7711",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies/token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"thedoe@gmail.com\",\n    \"password\": \"ilovegolang\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7711/api/v1/companies/token",
+					"host": [
+						"localhost"
+					],
+					"port": "7711",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
