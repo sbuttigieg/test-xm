@@ -19,7 +19,7 @@ Technical requirements
 Expectations:
 § As a deliverable, we expect a GitHub repository with the source code. 
 § We would like the solution to contain clear instructions to set up and execute the project.
-• We expect the solution to be production ready.
+§ We expect the solution to be production ready.
 
 Will be considered a plus:
 ==> On each mutating operation, an event should be produced.
