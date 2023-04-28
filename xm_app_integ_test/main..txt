@@ -1,0 +1,90 @@
+package main
+
+import (
+	"bytes"
+	"database/sql"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
+
+	_ "github.com/lib/pq"
+)
+
+// Define a struct for the test data
+type TestData struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func TestIntegration(t *testing.T) {
+	// Set up a test database connection
+	db, err := sql.Open("postgres", "postgres://postgres:password@localhost:5432/testdb?sslmode=disable")
+	if err != nil {
+		t.Fatalf("failed to connect to database: %s", err)
+	}
+	defer db.Close()
+
+	// Create a test HTTP server
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Get the request body
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Parse the request body
+		var data TestData
+		err = json.Unmarshal(body, &data)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Insert the data into the database
+		_, err = db.Exec("INSERT INTO test_table (name, age) VALUES ($1, $2)", data.Name, data.Age)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Write the response
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Data inserted successfully"))
+	}))
+	defer ts.Close()
+
+	// Set the test HTTP server URL as an environment variable
+	os.Setenv("TEST_SERVER_URL", ts.URL)
+
+	// Call the server with test data
+	testData := TestData{Name: "John Doe", Age: 30}
+	body, err := json.Marshal(testData)
+	if err != nil {
+		t.Fatalf("failed to marshal test data: %s", err)
+	}
+	resp, err := http.Post(fmt.Sprintf("%s/data", ts.URL), "application/json", bytes.NewBuffer(body))
+	if err != nil {
+		t.Fatalf("failed to call test server: %s", err)
+	}
+	defer resp.Body.Close()
+
+	// Check the response status code
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+
+	// Check that the data was inserted into the database
+	var count int
+	err = db.QueryRow("SELECT COUNT(*) FROM test_table WHERE name=$1 AND age=$2", testData.Name, testData.Age).Scan(&count)
+	if err != nil {
+		t.Fatalf("failed to query test data: %s", err)
+	}
+	if count != 1 {
+		t.Errorf("unexpected number of rows: %d", count)
+	}
+}

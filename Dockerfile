@@ -16,3 +16,4 @@ ENTRYPOINT ["/test-xm"]
 
 # expose port
 EXPOSE 7711
+EXPOSE 9092

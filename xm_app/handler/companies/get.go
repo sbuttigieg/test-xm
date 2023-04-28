@@ -1,10 +1,16 @@
 package companies
 
 import (
+	"context"
+	"fmt"
+	mathRand "math/rand"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/sbuttigieg/test-xm/xm_app/services"
 )
 
 func (h *Handler) Get(c *gin.Context) {
@@ -34,6 +40,13 @@ func (h *Handler) Get(c *gin.Context) {
 
 		return
 	}
+
+	mathRand.Seed(time.Now().UnixNano())
+	a := mathRand.Intn(100000)
+	fmt.Println("**** RANDOM **** ", a)
+
+	kk, err := services.Produce(context.Background(), "hello", a)
+	fmt.Println("**** KAFKA **** ", kk, err)
 
 	c.JSON(http.StatusOK, OKMsg{
 		Code: http.StatusOK,

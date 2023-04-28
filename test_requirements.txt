@@ -1,4 +1,4 @@
-Technical requirements
+§ Technical requirements
 
 § Build a microservice to handle companies. It should provide the following operations:
 § Create
@@ -16,10 +16,10 @@ Technical requirements
 
 § Only authenticated users should have access to create, update and delete companies.
 
-Expectations:
+§ Expectations:
 § As a deliverable, we expect a GitHub repository with the source code. 
 § We would like the solution to contain clear instructions to set up and execute the project.
-• We expect the solution to be production ready.
+§ We expect the solution to be production ready.
 
 Will be considered a plus:
 ==> On each mutating operation, an event should be produced.
