@@ -38,6 +38,8 @@ services:
     environment:
       ENDPOINT_URL: ${ENDPOINT_URL}
       ENV: ${ENV}
+      JWT_EXPIRY_SEC: ${JWT_EXPIRY_SEC}
+      JWT_KEY: ${JWT_KEY}
       LOG_LEVEL: ${LOG_LEVEL}
       PORT: ${PORT}
       SERVICE_NAME: ${SERVICE_NAME}
