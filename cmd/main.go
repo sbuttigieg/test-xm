@@ -4,7 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -18,6 +21,8 @@ import (
 )
 
 func main() {
+	const errorChan int = 10
+
 	ctx := context.Background()
 
 	// logger setup
@@ -59,6 +64,7 @@ func main() {
 	// api setup
 	endpointURL := os.Getenv("ENDPOINT_URL")
 	apiAddr := os.Getenv("PORT")
+	healthAddr := os.Getenv("H_PORT")
 	appStore := companies.NewStore(c, dbConnection, cache)
 	appService := companies.NewService(c, cache, appStore, uuid.New, time.Now)
 	appHandlers := companies.NewHandlers(appService)
@@ -98,9 +104,43 @@ func main() {
 		user.POST("/token", usersHandlers.GetToken)
 	}
 
-	// Start the server
-	err = appRouter.Run(fmt.Sprintf(":%s", apiAddr))
-	if err != nil {
-		log.WithContext(ctx).Panic(err.Error())
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", apiAddr),
+		Handler: appRouter,
+	}
+
+	errChan := make(chan error, errorChan)
+
+	go func() {
+		log.WithContext(ctx).Info(fmt.Sprintf("HTTP service listening on %s", apiAddr))
+		errChan <- srv.ListenAndServe()
+	}()
+
+	healthSrv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", healthAddr),
+		Handler: appRouter,
+	}
+
+	go func() {
+		log.Info(ctx, fmt.Sprintf("Health service listening on %s", healthAddr))
+		errChan <- healthSrv.ListenAndServe()
+	}()
+
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+
+	for {
+		select {
+		case err := <-errChan:
+			if err != nil {
+				log.WithContext(ctx).Fatal(err.Error())
+			}
+		case s := <-signalChan:
+			log.Info(ctx, "Captured %v. Exiting...", s)
+			// health.SetReadinessStatus(http.StatusServiceUnavailable)
+			srv.Shutdown(ctx)
+
+			os.Exit(0)
+		}
 	}
 }

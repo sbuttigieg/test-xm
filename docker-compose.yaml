@@ -35,6 +35,7 @@ services:
     tty: true
     ports:
       - "7711:${PORT}"
+      - "7712:${H_PORT}"
     environment:
       ENDPOINT_URL: ${ENDPOINT_URL}
       ENV: ${ENV}

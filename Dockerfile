@@ -15,4 +15,4 @@ WORKDIR /
 ENTRYPOINT ["/test-xm"]
 
 # expose port
-EXPOSE 7711
+EXPOSE 7711 7712
